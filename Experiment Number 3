@@ -1,0 +1,26 @@
+// Nandana Ramachandran
+// S3 CS(AI)
+// Roll no:44
+#include<stdio.h>
+Int search (int arr[],int N,int x)
+{
+ For(int i=0;i<N;i++)
+ 
+ If (arr[i]==x)
+ Return I;
+ Return -1;
+} 
+ Int main(void)
+{ 
+ Int arr[]={2,3,4,10,40};
+ Int x=10;
+ Int N=sizeof(arr)/sizeof(arr[0]);
+ Int result=search(arr,N,x);
+ (result==-1)
+ ?printf(“element is not present in array”)
+ :printf(“element is present at index%d”,result);
+ Return 0;
+ 
+}
+OUTPUT
+Element is present at index 3
