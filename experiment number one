@@ -1,1 +1,111 @@
+// Nandana Ramachandran
+// S3 CS(AI)
+// Roll no:44
+PROGRAM
+#include<stdio.h>
+Struct poly {
+Int coeff;
+Int exp;
+};
+{
+Struct poly p1[10], p2[10], p3[10];
+Int readPoly(struct poly[]);
+Int addPoly(struct poly[], struct poly[], int, int, struct poly[]);
+Void displayPoly(struct poly[], int terms);
+Int main(){
+Int t1, t2, t3)
+T1 = readPoly(p1);
+Printf(“ \n First polynomial : “);
+displayPoly(p1, t1);
+T2 = readPoly(p2);
+Printf(“ \n Second polynomial : “);
+displayPoly(p2, t2);
+T3 = addPoly(p1, p2, t1, t2, p3);
+Printf(“ \n\n Resultant polynomial after addition : “);
+displayPoly(p3, t3);
+printf(“\n”);
+return 0;
+}
+Int readPoly(struct poly p[10])
+{
+Int t1, I;
+Printf(“\n\n Enter the total number of terms in the polynomial:”);
+Scanf(“%d”, &t1);
+Printf(“\n Enter the COEFFICIENT and EXPONENT in DESCENDING ORDER\n”);
+For (I = 0; I < t1; i++) {
+Printf(“ Enter the Coefficient(%d): “, I + 1);
+Scanf(“%d”, &p[i].coeff);
+Printf(“ Enter the exponent(%d): “, I + 1);
+Scanf(“%d”, &p[i].expo); }
+Return (t1);
+}
+Int addPoly(struct poly p1[10], struct poly p2[10], int t1, int t2, struct poly p3[10])
+{
+Int I, j, k;
+I = 0;
+J = 0;
+K = 0;
+While (I < t1 && j < t2) {
+If (p1[i].expo == p2[j].expo) {
+P3[k].coeff = p1[i].coeff + p2[j].coeff;
+P3[k].expo = p1[i].expo;
+I++;
+J++;
+K++;
+}
+Else if (p1[i].expo > p2[j].expo) {
+P3[k].coeff = p1[i].coeff;
+P3[k].expo = p1[i].expo;
+I++;
+K++;
+}
+Else {
+P3[k].coeff = p2[j].coeff;
+P3[k].expo = p2[j].expo;
+J++;
+K++;
+}
+}
+While (I < t1) {
+P3[k].coeff = p1[i].coeff;
+P3[k].expo = p1[i].expo;
+I++;
+K++;
+}
+While (j < t2) {
+P3[k].coeff = p2[j].coeff;
+P3[k].expo = p2[j].expo;J++;
+K++;
+}
+Return (k); /* k is number of terms in resultant polynomial*/
+}
+Void displayPoly(struct poly p[10], int term)
+{
+Int k;
+For (k = 0; k < term – 1; k++)
+Printf(“%d(x^%d)+”, p[k].coeff, p[k].expo);
+Printf(“%d(x^%d)”, p[term – 1].coeff, p[term – 1].expo);
+}
+OUTPUT
+Enter the total number of terms in the polynomial:3
+Enter the coefficient and exponent in descending order
+Enter the coefficient (1):7 
+Enter the exponent (1):1
+Enter the coefficient (2):8
+Enter the exponent (2):4
+Enter the coefficient (3):9
+Enter the exponent (3):2
+First polynomial:7(x^1)+8(x^4)+9(x^2)
+Enter the total number of terms in the polynomial:4 Enter the coefficient and exponent in descending 
+order
+Enter the coefficient (1):7 
+Enter the exponent (1):1
+Enter the coefficient (2):8
+Enter the exponent (2):3
+Enter the coefficient (3):8
+Enter the exponent (3):4
+Enter the coefficient (4):4
+Enter the exponent (4):4.
+Second polynomial;7(x^1)+8(x^3)+8(x^4)+4(x^4)
+Resultant Polynomial after addition:14(x^1)+8(x^4)+8(x^4)+4(x^4)+9(x^2)
 
