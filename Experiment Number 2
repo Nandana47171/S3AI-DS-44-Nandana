@@ -1,0 +1,49 @@
+// program to find bubble sort
+// Nandana Ramachandran
+//Roll No:44
+#include<stdbool.h>
+#include<stdio.h>
+Void swap(int*xp,int*yp)
+{
+ Int temp=*xp;
+ *xp=*yp;
+ *yp=temp;
+}
+Void bubblesort(int arr[],int n)
+{
+ Int I,j;
+ Bool swapped;
+ For(i=0;i<n-1;i++)
+ {
+ 
+ Swapped=false;
+ For(j=0;j<n-i-1;j++)
+ {
+ If(arr[j]>arr[j+1])
+ {
+ Swap(&arr[j],&arr[j+1]);
+ Swapped=true;
+ }
+ }
+ 
+ If(swapped==false)
+Break;
+ } 
+}
+Void printArray(int arr[],int size)
+{
+ Int I;
+ For(i=0;i<size;i++)
+ Printf(“%d”,arr[i]);
+}
+Int main()
+{
+ Int arr[]={64,34,25,12,22,11,90};
+ Int n=sizeof(arr)/ sizeof(arr[0]);
+ Bubblesort (arr,n);
+ Printf(“Sorted array:\n”);
+ printArray(arr,n);
+ return 0;
+}
+OUTPUT
+The sorted Array : 11,12,22,25,34,64,90
