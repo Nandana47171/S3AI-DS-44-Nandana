@@ -1,5 +1,5 @@
 //program to add 2 sparse matrices
-//swaliha_59
+//nandana ramachandran_44
 #include<stdio.h>
 void Sparse(int A[10][10], int m, int n, int S[20][3]);
 void PrintSparse(int S[20][3]);
