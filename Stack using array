@@ -1,0 +1,239 @@
+//program of stack using array
+
+//Nandana Ramachandran_44
+
+#include <stdio.h>
+
+int stack[100];
+
+int top = -1;
+
+int size = 5;
+
+void push(int x)
+
+{
+
+If (top >= size – 1) 
+
+{
+
+Printf(“stack overflow\n”);
+
+}
+
+else
+
+{
+
+Top++;
+
+Stack[top] = x;
+
+}
+
+}
+
+int pop()
+
+{
+
+If (top < 0)
+
+{
+
+printf(“stack underflow\n”);
+
+Return -1; // Return a sentinel value (e.g., -1) to indicate an error
+
+} 
+
+else
+
+{
+
+int x = stack[top];
+
+Top--
+Return x;
+
+}
+
+}
+
+int peek()
+
+{
+
+if (top < 0)
+
+{
+
+printf(“stack underflow\n”);
+
+Return -1; // Return a sentinel value (e.g., -1) to indicate an error
+
+} 
+
+Else
+
+{
+
+Return stack[top];
+
+}
+
+}
+
+Void display() 
+
+{
+
+If (top < 0) 
+
+{
+
+printf(“stack is empty\n”);
+
+} 
+
+else 
+
+{
+
+printf(“stack elements are:\n”);
+
+for (int I = 0; I <= top; i++)
+
+{
+
+printf(“%d “, stack[i]);
+
+}
+
+printf(“\n”);
+}
+
+}
+
+int main() 
+
+{
+
+int choice, value;
+
+while (1) {
+
+printf(“\nmenu:\n”);
+
+printf(“1. Push\n”);
+
+printf(“2. Pop\n”);
+
+printf(“3. Peek\n”);
+
+printf(“4. Display\n”);
+
+printf(“5. Exit\n”);
+
+printf(“enter your choice: “);
+
+scanf(“%d”, &choice);
+
+switch (choice)
+
+{
+
+Case 1:
+
+printf(“enter value to push: “);
+
+scanf(“%d”, &value);
+
+push(value);
+
+break;
+
+Case 2:
+
+value = pop();
+
+if (value != -1)
+
+{
+
+printf(“popped value is %d\n”, value);
+
+}
+
+break;
+
+Case 3:
+Value = peek();
+
+If (value != -1) 
+
+{
+
+Printf(“top element is %d\n”, value);
+
+}
+
+Break;
+
+Case 4:
+
+Display();
+
+Break;
+
+Case 5:
+
+printf(“exiting…\n”);
+
+return 0;
+
+Default:
+
+printf(“invalid choice, please try again.\n”);
+
+}
+
+}
+
+return 0;
+
+}
+
+OUTPUT
+
+Menu:
+
+1. Push
+
+2. Pop
+
+3. Peek
+
+4. display
+
+5. exit
+
+Enter your choice: 1
+
+Enter value to push: 6
+
+Menu:
+
+1.push
+
+2.pop
+
+3.peek
+4.display
+
+5.exit
+
+Enter your choice :6
+
+Stack elements are: 4 6
