@@ -1,0 +1,139 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct SinglyNode {
+    int data;
+    struct SinglyNode *next;
+} SinglyNode;
+
+typedef struct DoublyNode 
+    int data;
+    struct DoublyNode *next;
+    struct DoublyNode *prev;
+} DoublyNode;
+
+
+typedef struct CircularNode {
+    int data;
+    struct CircularNode *next;
+} 
+SinglyNode* createSinglyNode(int data) {
+    SinglyNode *newNode = (SinglyNode*)malloc(sizeof(SinglyNode));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertSingly(SinglyNode **head, int data) {
+    SinglyNode *newNode = createSinglyNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        SinglyNode *temp = *head;
+        while (temp->next) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void displaySingly(SinglyNode *head) {
+    SinglyNode *temp = head;
+    while (temp) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+DoublyNode* createDoublyNode(int data) {
+    DoublyNode *newNode = (DoublyNode*)malloc(sizeof(DoublyNode));
+    newNode->data = data;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+    return newNode;
+}
+void insertDoubly(DoublyNode **head, int data) {
+    DoublyNode *newNode = createDoublyNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        DoublyNode *temp = *head;
+        while (temp->next) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+}
+
+
+void displayDoubly(DoublyNode *head) {
+    DoublyNode *temp = head;
+    while (temp) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+CircularNode* createCircularNode(int data) {
+    CircularNode *newNode = (CircularNode*)malloc(sizeof(CircularNode));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+void insertCircular(CircularNode **head, int data) {
+    CircularNode *newNode = createCircularNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        newNode->next = newNode; // Point to itself
+    } else {
+        CircularNode *temp = *head;
+        while (temp->next != *head) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->next = *head;
+    }
+}
+
+
+void displayCircular(CircularNode *head) {
+    if (head == NULL) return;
+    CircularNode *temp = head;
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("(back to head: %d)\n", head->data);
+}
+
+int main() {
+    SinglyNode *singlyHead = NULL;
+    DoublyNode *doublyHead = NULL;
+    CircularNode *circularHead = NULL;
+
+ 
+    printf("Singly Linked List:\n");
+    insertSingly(&singlyHead, 10);
+    insertSingly(&singlyHead, 20);
+    insertSingly(&singlyHead, 30);
+    displaySingly(singlyHead);
+ 
+    printf("Doubly Linked List:\n");
+    insertDoubly(&doublyHead, 40);
+    insertDoubly(&doublyHead, 50);
+    insertDoubly(&doublyHead, 60);
+    displayDoubly(doublyHead);
+
+     
+    printf("Circular Linked List:\n");
+    insertCircular(&circularHead, 70);
+    insertCircular(&circularHead, 80);
+    insertCircular(&circularHead, 90);
+    displayCircular(circularHead);
+
+    return 0;
+}
