@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX 100
+
+// Stack structure
+typedef struct {
+    int items[MAX];
+    int top;
+} Stack;
+
+// Function to initialize the stack
+void initStack(Stack *s) {
+    s->top = -1;
+}
+
+// Function to check if the stack is empty
+int isEmpty(Stack *s) {
+    return s->top == -1;
+}
+
+// Function to push an item onto the stack
+void push(Stack *s, int item) {
+    if (s->top < MAX - 1) {
+        s->items[++(s->top)] = item;
+    } else {
+        printf("Stack overflow\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+// Function to pop an item from the stack
+int pop(Stack *s) {
+    if (!isEmpty(s)) {
+        return s->items[(s->top)--];
+    } else {
+        printf("Stack underflow\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+// Function to evaluate a postfix expression
+int evaluatePostfix(const char *expression) {
+    Stack stack;
+    initStack(&stack);
+    
+    for (int i = 0; expression[i]; i++) {
+        if (isdigit(expression[i])) {
+            // Push operand to the stack
+            push(&stack, expression[i] - '0'); // Convert char to int
+        } else {
+            // Pop two operands from the stack
+            int op2 = pop(&stack);
+            int op1 = pop(&stack);
+            int result;
+
+            switch (expression[i]) {
+                case '+':
+                    result = op1 + op2;
+                    break;
+                case '-':
+                    result = op1 - op2;
+                    break;
+                case '*':
+                    result = op1 * op2;
+                    break;
+                case '/':
+                    if (op2 == 0) {
+                        printf("Division by zero error\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    result = op1 / op2;
+                    break;
+                default:
+                    printf("Unknown operator: %c\n", expression[i]);
+                    exit(EXIT_FAILURE);
+            }
+
+            // Push the result back onto the stack
+            push(&stack, result);
+        }
+    }
+
+    // The final result should be the only item left on the stack
+    return pop(&stack);
+}
+
+int main() {
+    const char *postfixExpression = "53+82-*"; // Example expression
+    int result = evaluatePostfix(postfixExpression);
+    printf("The result of the postfix expression '%s' is: %d\n", postfixExpression, result);
+    return 0;
+}
