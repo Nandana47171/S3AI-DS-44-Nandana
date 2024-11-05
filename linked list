@@ -4,93 +4,127 @@
 
 typedef struct SinglyNode {
     int data;
-    struct SinglyNode *next;
+    struct SinglyNode* next;
 } SinglyNode;
 
-typedef struct DoublyNode 
+
+typedef struct DoublyNode {
     int data;
-    struct DoublyNode *next;
-    struct DoublyNode *prev;
+    struct DoublyNode* prev;
+    struct DoublyNode* next;
 } DoublyNode;
 
 
 typedef struct CircularNode {
     int data;
-    struct CircularNode *next;
-} 
+    struct CircularNode* next;
+} CircularNode;
+
+
+
 SinglyNode* createSinglyNode(int data) {
-    SinglyNode *newNode = (SinglyNode*)malloc(sizeof(SinglyNode));
+    SinglyNode* newNode = (SinglyNode*)malloc(sizeof(SinglyNode));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
 void insertSingly(SinglyNode **head, int data) {
-    SinglyNode *newNode = createSinglyNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-    } else {
-        SinglyNode *temp = *head;
-        while (temp->next) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
+    SinglyNode* newNode = createSinglyNode(data);
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void deleteSingly(SinglyNode **head, int data) {
+    SinglyNode* temp = *head, *prev = NULL;
+    if (temp != NULL && temp->data == data) {
+        *head = temp->next;  
+        free(temp);
+        return;
     }
+    while (temp != NULL && temp->data != data) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) return;  
+    prev->next = temp->next;
+    free(temp);
 }
 
 void displaySingly(SinglyNode *head) {
-    SinglyNode *temp = head;
-    while (temp) {
+    SinglyNode* temp = head;
+    while (temp != NULL) {
         printf("%d -> ", temp->data);
         temp = temp->next;
     }
     printf("NULL\n");
 }
 
+
 DoublyNode* createDoublyNode(int data) {
-    DoublyNode *newNode = (DoublyNode*)malloc(sizeof(DoublyNode));
+    DoublyNode* newNode = (DoublyNode*)malloc(sizeof(DoublyNode));
     newNode->data = data;
-    newNode->next = NULL;
     newNode->prev = NULL;
+    newNode->next = NULL;
     return newNode;
 }
+
 void insertDoubly(DoublyNode **head, int data) {
-    DoublyNode *newNode = createDoublyNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-    } else {
-        DoublyNode *temp = *head;
-        while (temp->next) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-        newNode->prev = temp;
+    DoublyNode* newNode = createDoublyNode(data);
+    newNode->next = *head;
+    if (*head != NULL) {
+        (*head)->prev = newNode;
     }
+    *head = newNode;
 }
 
+void deleteDoubly(DoublyNode **head, int data) {
+    DoublyNode* temp = *head;
+    if (temp != NULL && temp->data == data) {
+        *head = temp->next;
+        if (*head != NULL) {
+            (*head)->prev = NULL;
+        }
+        free(temp);
+        return;
+    }
+    while (temp != NULL && temp->data != data) {
+        temp = temp->next;
+    }
+    if (temp == NULL) return;
+    if (temp->prev != NULL) {
+        temp->prev->next = temp->next;
+    }
+    if (temp->next != NULL) {
+        temp->next->prev = temp->prev;
+    }
+    free(temp);
+}
 
 void displayDoubly(DoublyNode *head) {
-    DoublyNode *temp = head;
-    while (temp) {
+    DoublyNode* temp = head;
+    while (temp != NULL) {
         printf("%d <-> ", temp->data);
         temp = temp->next;
     }
     printf("NULL\n");
 }
 
+
+
 CircularNode* createCircularNode(int data) {
-    CircularNode *newNode = (CircularNode*)malloc(sizeof(CircularNode));
+    CircularNode* newNode = (CircularNode*)malloc(sizeof(CircularNode));
     newNode->data = data;
-    newNode->next = NULL;
+    newNode->next = newNode;  
     return newNode;
 }
+
 void insertCircular(CircularNode **head, int data) {
-    CircularNode *newNode = createCircularNode(data);
+    CircularNode* newNode = createCircularNode(data);
     if (*head == NULL) {
         *head = newNode;
-        newNode->next = newNode; // Point to itself
     } else {
-        CircularNode *temp = *head;
+        CircularNode* temp = *head;
         while (temp->next != *head) {
             temp = temp->next;
         }
@@ -99,41 +133,86 @@ void insertCircular(CircularNode **head, int data) {
     }
 }
 
+void deleteCircular(CircularNode **head, int data) {
+    if (*head == NULL) return;
+    CircularNode* temp = *head;
+    CircularNode* prev = NULL;
+
+    
+    if (temp->data == data) {
+        prev = *head;
+        while (prev->next != *head) {
+            prev = prev->next;
+        }
+        if (*head == (*head)->next) { 
+            free(*head);
+            *head = NULL;
+        } else {
+            prev->next = temp->next;
+            *head = temp->next;
+            free(temp);
+        }
+        return;
+    }
+
+    
+    while (temp->next != *head && temp->data != data) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp->data == data) {
+        prev->next = temp->next;
+        free(temp);
+    }
+}
 
 void displayCircular(CircularNode *head) {
     if (head == NULL) return;
-    CircularNode *temp = head;
+    CircularNode* temp = head;
     do {
         printf("%d -> ", temp->data);
         temp = temp->next;
     } while (temp != head);
-    printf("(back to head: %d)\n", head->data);
+    printf("...\n");
 }
+
 
 int main() {
     SinglyNode *singlyHead = NULL;
     DoublyNode *doublyHead = NULL;
     CircularNode *circularHead = NULL;
 
- 
-    printf("Singly Linked List:\n");
+    
     insertSingly(&singlyHead, 10);
     insertSingly(&singlyHead, 20);
     insertSingly(&singlyHead, 30);
+    printf("Singly Linked List: ");
     displaySingly(singlyHead);
- 
-    printf("Doubly Linked List:\n");
+    deleteSingly(&singlyHead, 20);
+    printf("After Deleting 20: ");
+    displaySingly(singlyHead);
+
+    
     insertDoubly(&doublyHead, 40);
     insertDoubly(&doublyHead, 50);
     insertDoubly(&doublyHead, 60);
+    printf("\nDoubly Linked List: ");
+    displayDoubly(doublyHead);
+    deleteDoubly(&doublyHead, 50);
+    printf("After Deleting 50: ");
     displayDoubly(doublyHead);
 
-     
-    printf("Circular Linked List:\n");
+    
     insertCircular(&circularHead, 70);
     insertCircular(&circularHead, 80);
     insertCircular(&circularHead, 90);
+    printf("\nCircular Linked List: ");
+    displayCircular(circularHead);
+    deleteCircular(&circularHead, 80);
+    printf("After Deleting 80: ");
     displayCircular(circularHead);
 
     return 0;
 }
+
