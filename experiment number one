@@ -2,144 +2,138 @@
 // S3 CS(AI)
 // Roll no:44
 PROGRAM
-
 #include <stdio.h>
 #include <stdlib.h>
 
 
-struct Term {
+struct Polynomial {
     int coefficient;
     int exponent;
-    struct Term* next;
+    struct Polynomial* next;
 };
 
 
-struct Term* createTerm(int coefficient, int exponent) {
-    struct Term* newTerm = (struct Term*) malloc(sizeof(struct Term));
-    newTerm->coefficient = coefficient;
-    newTerm->exponent = exponent;
-    newTerm->next = NULL;
-    return newTerm;
+struct Polynomial* newTerm(int coefficient, int exponent) {
+    struct Polynomial* term = (struct Polynomial*)malloc(sizeof(struct Polynomial));
+    if (!term) {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
+    term->coefficient = coefficient;
+    term->exponent = exponent;
+    term->next = NULL;
+    return term;
 }
 
 
-void insertTerm(struct Term** poly, int coefficient, int exponent) {
-    struct Term* newTerm = createTerm(coefficient, exponent);
+void insertTerm(struct Polynomial** poly, int coefficient, int exponent) {
+    struct Polynomial* new_node = newTerm(coefficient, exponent);
     if (*poly == NULL || (*poly)->exponent < exponent) {
-        newTerm->next = *poly;
-        *poly = newTerm;
+        new_node->next = *poly;
+        *poly = new_node;
     } else {
-        struct Term* temp = *poly;
+        struct Polynomial* temp = *poly;
         while (temp->next != NULL && temp->next->exponent > exponent) {
             temp = temp->next;
         }
+        
         if (temp->next != NULL && temp->next->exponent == exponent) {
             temp->next->coefficient += coefficient;
-            free(newTerm);
+            free(new_node);  
         } else {
-            newTerm->next = temp->next;
-            temp->next = newTerm;
+            new_node->next = temp->next;
+            temp->next = new_node;
         }
     }
 }
 
 
-void displayPolynomial(struct Term* poly) {
-    struct Term* temp = poly;
-    if (temp == NULL) {
-        printf("0\n");
-        return;
-    }
-    while (temp != NULL) {
-        if (temp->coefficient > 0 && temp != poly) {
-            printf(" + ");
-        }
-        printf("%dx^%d", temp->coefficient, temp->exponent);
-        temp = temp->next;
-    }
-    printf("\n");
-}
-
-
-struct Term* addPolynomials(struct Term* poly1, struct Term* poly2) {
-    struct Term* result = NULL;
-    struct Term* temp1 = poly1;
-    struct Term* temp2 = poly2;
-
-    while (temp1 != NULL && temp2 != NULL) {
-        if (temp1->exponent > temp2->exponent) {
-            insertTerm(&result, temp1->coefficient, temp1->exponent);
-            temp1 = temp1->next;
-        } else if (temp1->exponent < temp2->exponent) {
-            insertTerm(&result, temp2->coefficient, temp2->exponent);
-            temp2 = temp2->next;
+struct Polynomial* addPolynomials(struct Polynomial* poly1, struct Polynomial* poly2) {
+    struct Polynomial* result = NULL;
+    
+    while (poly1 != NULL && poly2 != NULL) {
+        if (poly1->exponent > poly2->exponent) {
+            insertTerm(&result, poly1->coefficient, poly1->exponent);
+            poly1 = poly1->next;
+        } else if (poly1->exponent < poly2->exponent) {
+            insertTerm(&result, poly2->coefficient, poly2->exponent);
+            poly2 = poly2->next;
         } else {
-            int sum = temp1->coefficient + temp2->coefficient;
+            int sum = poly1->coefficient + poly2->coefficient;
             if (sum != 0) {
-                insertTerm(&result, sum, temp1->exponent);
+                insertTerm(&result, sum, poly1->exponent);
             }
-            temp1 = temp1->next;
-            temp2 = temp2->next;
+            poly1 = poly1->next;
+            poly2 = poly2->next;
         }
     }
-
-   
-    while (temp1 != NULL) {
-        insertTerm(&result, temp1->coefficient, temp1->exponent);
-        temp1 = temp1->next;
+    
+    
+    while (poly1 != NULL) {
+        insertTerm(&result, poly1->coefficient, poly1->exponent);
+        poly1 = poly1->next;
     }
-
-   
-    while (temp2 != NULL) {
-        insertTerm(&result, temp2->coefficient, temp2->exponent);
-        temp2 = temp2->next;
+    
+    while (poly2 != NULL) {
+        insertTerm(&result, poly2->coefficient, poly2->exponent);
+        poly2 = poly2->next;
     }
 
     return result;
 }
 
 
+void displayPolynomial(struct Polynomial* poly) {
+    if (poly == NULL) {
+        printf("0\n");
+        return;
+    }
+
+    while (poly != NULL) {
+        if (poly->coefficient > 0 && poly != poly) {
+            printf(" + ");
+        }
+        printf("%dx^%d", poly->coefficient, poly->exponent);
+        poly = poly->next;
+    }
+    printf("\n");
+}
+
 int main() {
-    struct Term* poly1 = NULL;
-    struct Term* poly2 = NULL;
-
-    int n, coefficient, exponent;
-
-   
-    printf("Enter the number of terms in the first polynomial: ");
-    scanf("%d", &n);
-    printf("Enter the terms in the form (coefficient exponent):\n");
-    for (int i = 0; i < n; i++) {
-        scanf("%d %d", &coefficient, &exponent);
-        insertTerm(&poly1, coefficient, exponent);
-    }
+    struct Polynomial* poly1 = NULL;
+    struct Polynomial* poly2 = NULL;
 
     
-    printf("Enter the number of terms in the second polynomial: ");
-    scanf("%d", &n);
-    printf("Enter the terms in the form (coefficient exponent):\n");
-    for (int i = 0; i < n; i++) {
-        scanf("%d %d", &coefficient, &exponent);
-        insertTerm(&poly2, coefficient, exponent);
-    }
-
+    insertTerm(&poly1, 3, 3);
+    insertTerm(&poly1, 5, 2);
+    insertTerm(&poly1, 6, 1);
+    insertTerm(&poly1, 2, 0);
     
-    printf("\nFirst Polynomial: ");
+  
+    insertTerm(&poly2, 4, 3);
+    insertTerm(&poly2, 2, 2);
+    insertTerm(&poly2, 1, 0);
+
+    printf("First Polynomial: ");
     displayPolynomial(poly1);
+
     printf("Second Polynomial: ");
     displayPolynomial(poly2);
 
    
-    struct Term* result = addPolynomials(poly1, poly2);
+    struct Polynomial* sum = addPolynomials(poly1, poly2);
 
-   
-    printf("\nResultant Polynomial: ");
-    displayPolynomial(result);
-    
-    
-    
-
+    printf("Sum of Polynomials: ");
+    displayPolynomial(sum);
 
     return 0;
 }
+
+
+   
+   
+
+    
+    
+    
 
