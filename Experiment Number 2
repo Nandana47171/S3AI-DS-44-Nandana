@@ -3,47 +3,45 @@
 //Roll No:44
 #include<stdbool.h>
 #include<stdio.h>
-Void swap(int*xp,int*yp)
+void swap(int*xp,int*yp)
 {
- Int temp=*xp;
+ int temp=*xp;
  *xp=*yp;
  *yp=temp;
 }
-Void bubblesort(int arr[],int n)
+void bubblesort(int arr[],int n)
 {
- Int I,j;
- Bool swapped;
- For(i=0;i<n-1;i++)
+ int i,j;
+ bool swapped;
+ for(i=0;i<n-1;i++)
  {
  
- Swapped=false;
- For(j=0;j<n-i-1;j++)
+ swapped=false;
+ for(j=0;j<n-i-1;j++)
  {
- If(arr[j]>arr[j+1])
+ if(arr[j]>arr[j+1])
  {
- Swap(&arr[j],&arr[j+1]);
- Swapped=true;
+ swap(&arr[j],&arr[j+1]);
+ swapped=true;
  }
  }
  
- If(swapped==false)
-Break;
+ if(swapped==false)
+break;
  } 
 }
-Void printArray(int arr[],int size)
+void printArray(int arr[],int size)
 {
- Int I;
- For(i=0;i<size;i++)
- Printf(“%d”,arr[i]);
+ int i;
+ for(i=0;i<size;i++)
+ printf("%d",arr[i]);
 }
-Int main()
+int main()
 {
- Int arr[]={64,34,25,12,22,11,90};
- Int n=sizeof(arr)/ sizeof(arr[0]);
- Bubblesort (arr,n);
- Printf(“Sorted array:\n”);
+ int arr[]={64,34,25,12,22,11,90};
+ int n=sizeof(arr)/ sizeof(arr[0]);
+ bubblesort (arr,n);
+ printf("Sorted Array:\n");
  printArray(arr,n);
  return 0;
 }
-OUTPUT
-The sorted Array : 11,12,22,25,34,64,90
